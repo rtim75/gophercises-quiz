@@ -5,14 +5,17 @@ import (
 	"flag"
 	"log"
 	"os"
-	"strings"
+
 	"github.com/rtim75/gophercises-quiz/quiz"
 )
 
 var problemPath string
 
+// var timer int
+
 func init() {
 	flag.StringVar(&problemPath, "f", "problems.csv", "A path to the csv file with problems.")
+	// flag.IntVar(&time, "t", 30, "")
 	flag.Parse()
 }
 
@@ -23,13 +26,7 @@ func main() {
 	}
 	defer file.Close()
 
-	data := make([]byte, 1024)
-	length, err := file.Read(data)
-	if err != nil {
-		log.Fatal("Error reading the file: ", err)
-	}
-
-	r := csv.NewReader(strings.NewReader(string(data[:length])))
+	r := csv.NewReader(file)
 	records, err := r.ReadAll()
 	if err != nil {
 		log.Fatal("Error parsing the csv file: ", err)
