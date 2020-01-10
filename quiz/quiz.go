@@ -1,26 +1,37 @@
 package quiz
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strings"
 )
 
-func StartQuiz(problems [][]string) {
+type problem struct {
+	q string
+	a string
+}
+
+func NewQuiz(records [][]string) {
 	var score int
-	for _, record := range problems {
-		input_reader := bufio.NewReader(os.Stdin)
-		fmt.Printf("%v = ", record[0])
-		input, err := input_reader.ReadString('\n')
-		answer := strings.TrimSuffix(input, "\n")
-		if err != nil {
-			log.Fatal("Error reading from stdin: ", err)
-		}
-		if answer == record[1] {
+	problems := parseRecords(records)
+	for _, p := range problems {
+		fmt.Printf("%v = ", p.q)
+		var answer string
+		fmt.Scanf("%s", &answer)
+		if answer == p.a {
 			score++
 		}
 	}
-	fmt.Printf("You scored %d out of %d\n", score, len(problems))
+	fmt.Printf("You scored %d out of %d\n", score, len(records))
+}
+
+func parseRecords(records [][]string) []problem {
+	ret := make([]problem, len(records))
+	for i, r := range records {
+		ret[i] = problem{
+			q: r[0],
+			a: strings.TrimSpace(r[1]),
+		}
+	}
+
+	return ret
 }

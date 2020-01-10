@@ -31,5 +31,5 @@ func main() {
 	if err != nil {
 		log.Fatal("Error parsing the csv file: ", err)
 	}
-	quiz.StartQuiz(records)
+	quiz.NewQuiz(records)
 }
