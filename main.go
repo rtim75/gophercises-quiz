@@ -11,11 +11,11 @@ import (
 
 var problemPath string
 
-// var timer int
+var timer int
 
 func init() {
 	flag.StringVar(&problemPath, "f", "problems.csv", "A path to the csv file with problems.")
-	// flag.IntVar(&time, "t", 30, "")
+	flag.IntVar(&timer, "t", 30, "A total time you have to solve all problems.")
 	flag.Parse()
 }
 
@@ -31,5 +31,5 @@ func main() {
 	if err != nil {
 		log.Fatal("Error parsing the csv file: ", err)
 	}
-	quiz.NewQuiz(records)
+	quiz.NewQuiz(records, timer)
 }
