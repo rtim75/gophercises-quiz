@@ -10,12 +10,13 @@ import (
 )
 
 var problemPath string
-
 var timer int
+var shuffle bool
 
 func init() {
 	flag.StringVar(&problemPath, "f", "problems.csv", "A path to the csv file with problems.")
 	flag.IntVar(&timer, "t", 30, "A total time you have to solve all problems.")
+	flag.BoolVar(&shuffle, "s", false, "Whether to shuffle the quiz.")
 	flag.Parse()
 }
 
@@ -31,5 +32,5 @@ func main() {
 	if err != nil {
 		log.Fatal("Error parsing the csv file: ", err)
 	}
-	quiz.NewQuiz(records, timer)
+	quiz.NewQuiz(records, timer, shuffle)
 }

@@ -2,6 +2,7 @@ package quiz
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 )
@@ -11,9 +12,9 @@ type problem struct {
 	a string
 }
 
-func NewQuiz(records [][]string, t int) {
+func NewQuiz(records [][]string, t int, shuffle bool) {
 	var score int
-	problems := parseRecords(records)
+	problems := parseRecords(records, shuffle)
 	timer := time.NewTimer(time.Duration(t) * time.Second)
 	for _, p := range problems {
 		fmt.Printf("%v = ", p.q)
@@ -21,7 +22,6 @@ func NewQuiz(records [][]string, t int) {
 		go func() {
 			var answer string
 			fmt.Scanf("%s\n", &answer)
-			fmt.Print(&answer)
 			answerCh <- answer
 		}()
 		select {
@@ -37,13 +37,18 @@ func NewQuiz(records [][]string, t int) {
 	fmt.Printf("\nYou scored %d out of %d\n", score, len(records))
 }
 
-func parseRecords(records [][]string) []problem {
+func parseRecords(records [][]string, shuffle bool) []problem {
 	ret := make([]problem, len(records))
 	for i, r := range records {
 		ret[i] = problem{
 			q: r[0],
 			a: strings.TrimSpace(r[1]),
 		}
+	}
+
+	if shuffle {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(ret), func(i, j int) { ret[i], ret[j] = ret[j], ret[i] })
 	}
 
 	return ret
