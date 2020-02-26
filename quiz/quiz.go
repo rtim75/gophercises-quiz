@@ -20,7 +20,8 @@ func NewQuiz(records [][]string, t int) {
 		answerCh := make(chan string)
 		go func() {
 			var answer string
-			fmt.Scanf("%s", answer)
+			fmt.Scanf("%s\n", &answer)
+			fmt.Print(&answer)
 			answerCh <- answer
 		}()
 		select {
@@ -33,6 +34,7 @@ func NewQuiz(records [][]string, t int) {
 			}
 		}
 	}
+	fmt.Printf("\nYou scored %d out of %d\n", score, len(records))
 }
 
 func parseRecords(records [][]string) []problem {
